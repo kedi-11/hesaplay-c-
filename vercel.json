@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/malzeme-takip_17.html"
+    }
+  ]
+}

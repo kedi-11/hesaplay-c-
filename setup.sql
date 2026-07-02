@@ -8,8 +8,8 @@ CREATE TABLE IF NOT EXISTS public.users (
   id          UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
   username    TEXT        UNIQUE NOT NULL,
   password    TEXT        NOT NULL,
-  role        TEXT        NOT NULL DEFAULT 'viewer'
-                          CHECK (role IN ('admin', 'viewer', 'sef', 'saha')),
+  role        TEXT        NOT NULL DEFAULT 'izleyici'
+                          CHECK (role IN ('admin', 'izleyici', 'saha_personeli', 'viewer', 'sef', 'saha', 'editor')),
   sections    JSONB       NOT NULL DEFAULT '[]'::jsonb,
   buildings   JSONB       NOT NULL DEFAULT '[]'::jsonb,
   created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS public.users (
 );
 
 COMMENT ON TABLE  public.users              IS 'Uygulama kullanıcıları';
-COMMENT ON COLUMN public.users.role        IS 'admin | viewer | sef | saha';
+COMMENT ON COLUMN public.users.role        IS 'admin | izleyici | saha_personeli (eski: viewer | sef | saha | editor)';
 COMMENT ON COLUMN public.users.sections    IS 'Erişim izni olan bölüm kodları — JSON dizi';
 COMMENT ON COLUMN public.users.buildings   IS 'Erişim izni olan bina kodları — JSON dizi, boş = tüm binalar';
 

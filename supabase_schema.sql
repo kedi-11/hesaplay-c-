@@ -49,6 +49,13 @@ ALTER TABLE public.users ADD COLUMN IF NOT EXISTS updated_at  TIMESTAMPTZ  DEFAU
 -- Saha Personeli rol izin sistemi: {modul: {read,create,update,delete}}
 ALTER TABLE public.users ADD COLUMN IF NOT EXISTS permissions JSONB        DEFAULT '{}';
 
+-- Eski rol CHECK kısıtlamasını kaldır (yalnızca admin/viewer/sef/saha'ya izin veriyordu)
+-- ve yeni rolleri (izleyici, saha_personeli) kapsayan kısıtlamayı ekle.
+-- Eski roller (viewer, sef, saha, editor) geriye dönük uyumluluk için korunur.
+ALTER TABLE public.users DROP CONSTRAINT IF EXISTS users_role_check;
+ALTER TABLE public.users ADD CONSTRAINT users_role_check
+  CHECK (role IN ('admin', 'izleyici', 'saha_personeli', 'viewer', 'sef', 'saha', 'editor'));
+
 CREATE INDEX IF NOT EXISTS users_username_idx ON public.users (username);
 CREATE INDEX IF NOT EXISTS users_created_at_idx ON public.users (created_at);
 
